@@ -30,7 +30,8 @@ var app = (function () {
     };
 
     var addPointToTopic = function(point){
-        stompClient.send("/app" + topico, {}, JSON.stringify(point));
+        stompClient.send("/topic/newpoint", {}, JSON.stringify(point));
+        console.log("Funciona"+point)
     };
 
 
@@ -44,7 +45,6 @@ var app = (function () {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/newpoint', function (eventbody) {
                 alert(eventbody)
-                
             });
         });
 

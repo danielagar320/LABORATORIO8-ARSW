@@ -55,7 +55,7 @@ Para esto, realice lo siguiente:
 	```bash
 	git commit -m "PARTE 1".
 	```
-
+![](img/img_2.png)
 
 ## Parte II.
 
