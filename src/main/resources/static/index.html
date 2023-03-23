@@ -16,8 +16,16 @@
     
     <body onload="app.init()">
         X:<input id="x" type="number"/>
-        Y:<input id="y" type="number"/>        
+        Y:<input id="y" type="number"/>
         <button onclick="app.publishPoint($('#x').val(),$('#y').val())">Send point</button>
-        <canvas id="canvas" width="800" height="600"></canvas>
+        </br>
+        </br>
+        IdDeDibujo:<input id="id" type="number"/>
+        </br>
+        </br>
+        <canvas id="canvas" width="800" height="600" style="border:1px solid #000000;"></canvas>
+        </br>
+        </br>
+<!--        <button onclick="app.connect()">Connect</button>-->
     </body>
 </html>

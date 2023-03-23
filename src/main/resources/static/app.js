@@ -14,6 +14,7 @@ var app = (function () {
     var addPointToCanvas = function (point) {        
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
+
         ctx.beginPath();
         ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
         ctx.stroke();
@@ -60,7 +61,7 @@ var app = (function () {
             var can = document.getElementById("canvas");
             
             //websocket connection
-            connectAndSubscribe();
+            //connectAndSubscribe();
 
             if(window.PointerEvent){
                 can.addEventListener("pointerdown",function(evt){
@@ -87,6 +88,14 @@ var app = (function () {
             setConnected(false);
             console.log("Disconnected");
         }
+
+//        connect: function () {
+//            if (stompClient !== null) {
+//                stompClient.connect();
+//            }
+//            setConnected(true);
+//            console.log("Connected");
+//        }
     };
 
 })();
