@@ -57,6 +57,7 @@ Para esto, realice lo siguiente:
 	```
 ![](img/img_2.png)
 
+
 ## Parte II.
 
 Para hacer mas útil la aplicación, en lugar de capturar las coordenadas con campos de formulario, las va a capturar a través de eventos sobre un elemento de tipo \<canvas>. De la misma manera, en lugar de simplemente mostrar las coordenadas enviadas en los eventos a través de 'alertas', va a dibujar dichos puntos en el mismo canvas. Haga uso del mecanismo de captura de eventos de mouse/táctil usado en ejercicios anteriores con este fin.
@@ -69,7 +70,7 @@ Para hacer mas útil la aplicación, en lugar de capturar las coordenadas con ca
 	```bash
 	git commit -m "PARTE 2".
 	```
-
+![](img.png)
 ## Parte III.
 
 Ajuste la aplicación anterior para que pueda manejar más de un dibujo a la vez, manteniendo tópicos independientes. Para esto:
