@@ -1,6 +1,6 @@
 var app = (function () {
 
-    var topico = 0;
+    var topic = 0;
 
     class Point{
         constructor(x,y){
@@ -31,8 +31,8 @@ var app = (function () {
     };
 
     var addPointToTopic = function(point){
-        stompClient.send("/topic/newpoint", {}, JSON.stringify(point));
-        console.log("Funciona"+point)
+        stompClient.send(topic, {}, JSON.stringify(point));
+//        console.log("Funciona"+point)
     };
 
 
@@ -44,7 +44,7 @@ var app = (function () {
         //subscribe to /topic/TOPICXX when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/newpoint', function (eventbody) {
+            stompClient.subscribe(topic, function (eventbody) {
         //        alert(eventbody)
                 var point=JSON.parse(eventbody.body);
                 addPointToCanvas(point);
@@ -57,11 +57,14 @@ var app = (function () {
 
     return {
 
-        init: function () {
+        init: function (drawId) {
             var can = document.getElementById("canvas");
+
+            topic = "/topic/newpoint." + drawId;
             
             //websocket connection
-            //connectAndSubscribe();
+            connectAndSubscribe();
+            alert("Dibujo #" + drawId )
 
             if(window.PointerEvent){
                 can.addEventListener("pointerdown",function(evt){
