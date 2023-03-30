@@ -57,10 +57,11 @@ var app = (function () {
 
     return {
 
-        init: function (drawId) {
+        init: function () {
+            const drawId = $("#drawId").val();
             var can = document.getElementById("canvas");
 
-            topic = "/topic/newpoint." + drawId;
+            topic = "/topic/newpoint." +drawId;
             
             //websocket connection
             connectAndSubscribe();
