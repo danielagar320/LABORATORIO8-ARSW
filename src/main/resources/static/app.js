@@ -6,21 +6,20 @@ var app = (function () {
         constructor(x,y){
             this.x=x;
             this.y=y;
-        }        
+        }
     }
-    
+
     var stompClient = null;
 
-    var addPointToCanvas = function (point) {        
+    var addPointToCanvas = function (point) {
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
-
         ctx.beginPath();
         ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
         ctx.stroke();
     };
-    
-    
+
+
     var getMousePosition = function (evt) {
         canvas = document.getElementById("canvas");
         var rect = canvas.getBoundingClientRect();
@@ -30,9 +29,27 @@ var app = (function () {
         };
     };
 
+    var addPolygonToCanvas = function(points){
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle='#f00';
+        ctx.beginPath();
+        for (let i = 1; i < points.length; i++) {
+             ctx.moveTo(points[i - 1].x, points[i - 1].y);
+             ctx.lineTo(points[i].x, points[i].y);
+              if (i === points.length - 1) {
+                  ctx.moveTo(points[i].x, points[i].y);
+                  ctx.lineTo(points[0].x, points[0].y);
+              }
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    };
+
     var addPointToTopic = function(point){
-        stompClient.send(topic, {}, JSON.stringify(point));
-//        console.log("Funciona"+point)
+        stompClient.send("/app"+topic, {}, JSON.stringify(point));
+//        console.log("funciona"+point);
     };
 
 
@@ -40,39 +57,44 @@ var app = (function () {
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
-        
+
         //subscribe to /topic/TOPICXX when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe(topic, function (eventbody) {
-        //        alert(eventbody)
-                var point=JSON.parse(eventbody.body);
-                addPointToCanvas(point);
+            stompClient.subscribe("/topic"+topic, function (eventbody) {
+//                alert(eventbody);
+//                var point=JSON.parse(eventbody.body);
+                if (topic.includes("newpoint")) {
+                    var point = JSON.parse(eventbody.body);
+                    addPointToCanvas(point);
+                }
+                else{
+                    addPolygonToCanvas(JSON.parse(eventbody.body));
+                }
+
             });
         });
 
     };
-    
-    
+
+
 
     return {
 
-        init: function () {
-            const drawId = $("#drawId").val();
+        connect: function (drawId) {
             var can = document.getElementById("canvas");
-
-            topic = "/topic/newpoint." +drawId;
-            
-            //websocket connection
+            var option = document.getElementById("connectBox");
+            topic = option.value + drawId;
             connectAndSubscribe();
-            alert("Dibujo #" + drawId )
-
-            if(window.PointerEvent){
-                can.addEventListener("pointerdown",function(evt){
-                    var pt = getMousePosition(evt);
-                    addPointToCanvas(pt);
-                    addPointToTopic(pt);
-                })
+            alert("Dibujo No"+drawId);
+            if(topic.includes("newpoint")){
+                if(window.PointerEvent){
+                    can.addEventListener("pointerdown",function(evt){
+                        var pt = getMousePosition(evt);
+                        addPointToCanvas(pt);
+                        addPointToTopic(pt);
+                    })
+                }
             }
         },
 
@@ -81,7 +103,6 @@ var app = (function () {
             console.info("publishing point at "+pt);
             addPointToCanvas(pt);
             addPointToTopic(pt);
-
             //publicar el evento
         },
 
@@ -92,14 +113,6 @@ var app = (function () {
             setConnected(false);
             console.log("Disconnected");
         }
-
-//        connect: function () {
-//            if (stompClient !== null) {
-//                stompClient.connect();
-//            }
-//            setConnected(true);
-//            console.log("Connected");
-//        }
     };
 
 })();

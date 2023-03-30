@@ -13,20 +13,23 @@
     </head>
 
 
-    
+
     <body>
         <div>
-            IdDeDibujo: <input id="drawID" type="number"/>
-            <button onclick="app.init()">Connect</button>
+            <select class="box" id="connectBox">
+                <option value="/newpoint.">
+                    Dibujo
+                </option>
+                <option value="/newpolygon.">
+                    Polígono
+                </option>
+            </select>
+            <input id="drawId" type="number">
+            <button onclick="app.connect($('#drawId').val())">Connect</button>
         </div>
-        <div>
-            <br>
-            <canvas id="canvas" width="800" height="600" style="border:1px solid #000000;"></canvas>
-            <!--        <button onclick="app.connect()">Connect</button>-->
-            <br>
-            X:<input id="x" type="number"/>
-            Y:<input id="y" type="number"/>
-            <button onclick="app.publishPoint($('#x').val(),$('#y').val())">Send point</button>
-        </div>
+        X:<input id="x" type="number"/>
+        Y:<input id="y" type="number"/>
+        <button onclick="app.publishPoint($('#x').val(),$('#y').val())">Send point</button>
+        <canvas id="canvas" width="800" height="600"></canvas>
     </body>
 </html>
